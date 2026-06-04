@@ -17,18 +17,25 @@ def seed_db():
         # Ensure database is clean
         db.drop_all()
         db.create_all()
-        
-        print("Database tables created.")
-        
-        # 1. Seed Admin
+        populate_dummy_data()
+        print("Database tables and seed data created.")
+
+def populate_dummy_data():
+    if Category.query.first():
+        return # Already populated
+
+    # 1. Seed Admin
+    admin_user = Admin.query.filter_by(username='admin').first()
+    if not admin_user:
         admin_user = Admin(
             username='admin',
             password_hash=generate_password_hash('admin123'),
             role='Administrator'
         )
         db.session.add(admin_user)
+        db.session.commit()
         
-        # 2. Seed Categories
+    # 2. Seed Categories
         categories = ['Exams', 'Placements', 'Sports', 'Events', 'General', 'Exam', 'Placement', 'Event']
         cat_objects = {}
         for name in categories:

@@ -19,15 +19,11 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
-    if not Admin.query.first():
-        from werkzeug.security import generate_password_hash
-        admin_user = Admin(
-            username='admin',
-            password_hash=generate_password_hash('admin123'),
-            role='Administrator'
-        )
-        db.session.add(admin_user)
-        db.session.commit()
+    try:
+        import seed
+        seed.populate_dummy_data()
+    except Exception as e:
+        print(f"Error seeding database: {e}")
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
