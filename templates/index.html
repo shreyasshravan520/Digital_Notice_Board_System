@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Campus Bulletin – The Oxford College of Science</title>
+  <meta name="description" content="Digital Notice Board for The Oxford College of Science. View all latest announcements, exam schedules, placements and events."/>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+  <script>
+    (function(){
+      var t = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<header class="header-navbar">
+  <div class="container nav-container">
+    <a href="/" class="logo-section">
+      <div class="logo-icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <h1>Campus Bulletin</h1>
+        <span>The Oxford College of Science</span>
+      </div>
+    </a>
+    <div class="nav-controls">
+      <button class="btn-icon" id="notif-btn" title="Notifications" onclick="scrollToNotices()">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+      </button>
+      <button class="btn-icon" id="theme-btn" title="Toggle Theme" onclick="toggleTheme()">
+        <svg id="theme-icon-sun" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none">
+          <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg id="theme-icon-moon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <a href="/admin" class="btn-admin">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        Admin Panel
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero-section">
+  <div class="hero-bg-shapes"><div class="shape-1"></div><div class="shape-2"></div></div>
+  <div class="container hero-grid">
+    <div class="hero-content">
+      <h2 class="greeting" id="hero-greeting">Good Morning</h2>
+      <h1 class="main-title">Stay Informed,<br>Stay Ahead.</h1>
+      <p class="subtitle">Your one-stop digital notice board for all campus updates, exam schedules, placement drives, events, and important announcements.</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="scrollToNotices()">View Notices</button>
+        <button class="btn-secondary" onclick="document.getElementById('about-section').scrollIntoView({behavior:'smooth'})">About College</button>
+      </div>
+    </div>
+    <div class="glass-card clock-widget">
+      <div class="clock-time" id="clock-time">00:00:00</div>
+      <div class="clock-date" id="clock-date">Loading…</div>
+      <div class="clock-location">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Bangalore, Karnataka
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS BAR ═══ -->
+<section class="container" style="margin-bottom:3rem;">
+  <div class="stats-info-bar">
+    <div class="glass-card stat-card">
+      <div class="stat-icon blue"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="stat-details"><h3 id="stat-total">—</h3><p>Active Notices</p></div>
+    </div>
+    <div class="glass-card stat-card">
+      <div class="stat-icon red"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+      <div class="stat-details"><h3 id="stat-urgent">—</h3><p>Urgent Notices</p></div>
+    </div>
+    <div class="glass-card stat-card">
+      <div class="stat-icon green"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <div class="stat-details"><h3 id="stat-depts">—</h3><p>Departments</p></div>
+    </div>
+    <div class="glass-card stat-card">
+      <div class="stat-icon purple"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <div class="stat-details"><h3 id="stat-categories">—</h3><p>Categories</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SEARCH & FILTERS ═══ -->
+<section class="container" id="notices-section">
+  <div class="filter-section">
+    <div class="search-box-wrapper">
+      <span class="search-icon">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <input type="text" class="search-input" id="search-input" placeholder="Search notices, events, exams…" oninput="filterNotices()"/>
+    </div>
+    <div class="filter-bar">
+      <div class="category-chips" id="category-chips">
+        <button class="chip active" data-cat="All" onclick="selectCategory(this)">All</button>
+      </div>
+      <div class="dropdown-filters">
+        <select class="filter-select" id="dept-filter" onchange="filterNotices()">
+          <option value="All">All Departments</option>
+        </select>
+        <select class="filter-select" id="priority-filter" onchange="filterNotices()">
+          <option value="All">All Priorities</option>
+          <option value="Urgent">Urgent</option>
+          <option value="Featured">Featured</option>
+          <option value="Normal">Normal</option>
+        </select>
+        <select class="filter-select" id="sort-filter" onchange="filterNotices()">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="priority">By Priority</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FEATURED NOTICE ═══ -->
+  <div class="featured-section" id="featured-section" style="display:none;">
+    <div class="glass-card featured-card" id="featured-card">
+      <div class="featured-content">
+        <div class="featured-badge">
+          <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Featured Notice
+        </div>
+        <h2 class="featured-title" id="featured-title">—</h2>
+        <p class="featured-desc" id="featured-desc">—</p>
+        <div class="featured-meta">
+          <span id="featured-dept">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          </span>
+          <span id="featured-date">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </span>
+        </div>
+      </div>
+      <div class="featured-image-container" id="featured-image">
+        <div class="featured-image-placeholder">
+          <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ NOTICES GRID ═══ -->
+  <div class="notices-section-title">
+    <span>All Notices <span id="notices-count" style="font-size:1rem;font-weight:500;color:var(--txt-muted)"></span></span>
+  </div>
+  <div class="notices-grid" id="notices-grid">
+    <div style="grid-column:1/-1;text-align:center;padding:4rem 0;color:var(--txt-muted);">
+      <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="margin-bottom:1rem;opacity:0.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <p>Loading notices…</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COLLEGE INFO ═══ -->
+<section class="college-details-section" id="about-section">
+  <div class="container">
+    <div class="details-grid">
+      <!-- About Card -->
+      <div class="glass-card details-block">
+        <div class="details-block-header">
+          <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          <h2>About Our Institution</h2>
+        </div>
+        <div class="about-field"><label>College Name</label><p>The Oxford College of Science</p></div>
+        <div class="about-field"><label>Established</label><p>1994</p></div>
+        <div class="about-field"><label>Accreditation</label><p>NAAC Accredited (Grade A)</p></div>
+        <div class="about-field"><label>Description</label><p>The Oxford College of Science is committed to academic excellence, innovation, research, and holistic student development. The institution provides world-class education and prepares students for successful careers and responsible citizenship.</p></div>
+        <div class="vision-mission-box">
+          <div class="vision-box"><h3>Our Vision</h3><p>To be a globally recognized centre of academic excellence, nurturing future-ready graduates who contribute positively to society.</p></div>
+          <div class="mission-box"><h3>Our Mission</h3><p>To provide quality education through innovative teaching, industry partnerships, and a culture of research and integrity.</p></div>
+        </div>
+      </div>
+
+      <!-- Contact & Address Card -->
+      <div style="display:flex;flex-direction:column;gap:2rem;">
+        <div class="glass-card details-block">
+          <div class="details-block-header">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.87a16 16 0 0 0 6.18 6.18l1.78-1.78a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <h2>Contact Information</h2>
+          </div>
+          <div class="contact-card-list">
+            <div class="contact-item"><div class="contact-item-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.87a16 16 0 0 0 6.18 6.18l1.78-1.78a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="contact-item-details"><label>Main Office</label><p>+91 80 2553 1234</p></div></div>
+            <div class="contact-item"><div class="contact-item-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="contact-item-details"><label>Email</label><p>info@oxfordcs.edu.in</p></div></div>
+            <div class="contact-item"><div class="contact-item-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="contact-item-details"><label>Website</label><p>www.oxfordcs.edu.in</p></div></div>
+            <div class="contact-item"><div class="contact-item-icon"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="contact-item-details"><label>Office Hours</label><p>Mon – Sat: 9:00 AM – 5:00 PM</p></div></div>
+          </div>
+        </div>
+        <div class="glass-card details-block" style="flex-grow:1;">
+          <div class="details-block-header">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <h2>Campus Address</h2>
+          </div>
+          <div class="map-placeholder">
+            <svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <h4>HSR Layout, Bangalore</h4>
+            <p style="font-size:0.85rem;margin-top:0.25rem;">No. 32, 17th Cross, Sector 7, HSR Layout, Bangalore – 560102, Karnataka, India</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="main-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-section" style="margin-bottom:1rem;">
+          <div class="logo-icon"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+          <div class="logo-text"><h1>Campus Bulletin</h1><span>The Oxford College of Science</span></div>
+        </div>
+        <p>Your trusted digital notice board for all official college communications, events, and announcements.</p>
+      </div>
+      <div class="footer-links-col">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#notices-section">All Notices</a></li>
+          <li><a href="#about-section">About College</a></li>
+          <li><a href="/admin">Admin Panel</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-col">
+        <h3>Categories</h3>
+        <ul id="footer-categories">
+          <li><a href="#" onclick="selectCategoryByName('Exams');return false;">Exams</a></li>
+          <li><a href="#" onclick="selectCategoryByName('Placements');return false;">Placements</a></li>
+          <li><a href="#" onclick="selectCategoryByName('Events');return false;">Events</a></li>
+          <li><a href="#" onclick="selectCategoryByName('Sports');return false;">Sports</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 The Oxford College of Science. All rights reserved.</p>
+      <p>Digital Notice Board System &mdash; Powered by Campus Bulletin</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ NOTICE DETAIL MODAL ═══ -->
+<div class="modal-overlay" id="notice-modal" onclick="closeModal(event)">
+  <div class="glass-card modal-container" id="modal-container">
+    <div class="modal-header">
+      <div class="modal-title-wrapper">
+        <span class="modal-badge badge-normal" id="modal-badge">Normal</span>
+        <h2 id="modal-title" style="font-size:1.5rem;margin-top:0.5rem;">—</h2>
+      </div>
+      <button class="btn-icon" onclick="document.getElementById('notice-modal').classList.remove('active')" style="flex-shrink:0;">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-body-meta">
+        <span id="modal-dept"></span>
+        <span id="modal-cat"></span>
+        <span id="modal-date"></span>
+        <span id="modal-expiry"></span>
+      </div>
+      <img id="modal-image" class="modal-image" src="" alt="" style="display:none;"/>
+      <p class="modal-desc" id="modal-desc">—</p>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
