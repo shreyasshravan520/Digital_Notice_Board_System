@@ -7,12 +7,21 @@ from models import db, Admin, Category, Department, Notice, ActivityLog
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "dev-secret-key")
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+
+is_vercel = os.environ.get("VERCEL") == "1" or os.environ.get("VERCEL_REGION")
+
+if is_vercel:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/database.db'
+    upload_path = "/tmp/uploads"
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+    upload_path = "static/uploads"
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Image Upload Configuration
-os.makedirs("static/uploads", exist_ok=True)
-app.config["UPLOAD_FOLDER"] = "static/uploads"
+os.makedirs(upload_path, exist_ok=True)
+app.config["UPLOAD_FOLDER"] = upload_path
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 db.init_app(app)
@@ -56,6 +65,12 @@ def login_required(f):
             return jsonify({'error': 'Unauthorized access'}), 401
         return f(*args, **kwargs)
     return decorated_function
+
+# Serve uploads manually for Vercel
+@app.route('/static/uploads/<filename>')
+def serve_upload(filename):
+    from flask import send_from_directory
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 # Page routes
 @app.route('/')
