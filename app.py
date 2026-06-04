@@ -59,7 +59,11 @@ def login_required(f):
 
 # Page routes
 @app.route('/')
-def index():
+def root_redirect():
+    return redirect(url_for('student_page'))
+
+@app.route('/student')
+def student_page():
     check_and_update_expirations()
     return render_template('index.html')
 
